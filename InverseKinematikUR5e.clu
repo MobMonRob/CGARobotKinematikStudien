@@ -1,0 +1,56 @@
+IPNS;
+// dh parameters UR5e
+a2 = -4.25;
+a3 = -3.922;
+d1 = 1.625;
+d4 = 1.333;
+d5 = 0.997;
+d6 = 0.996;
+
+// position of the end-effector and joint 5
+P_e = createPoint(3 * x_p, 3 * y_p, 3 * z_p);
+P_5 = createPoint(3 * x_p - d6, 3 * y_p - d6, 3 * z_p - d6);
+
+// sphere around P_5
+S_c = Dual(SphereN3(P_5, d4));
+// sphere around the origin
+K_0 = Dual(SphereN3(e0, S_c . e0));
+// intersection of S_c and K_0;
+C_5k = S_c ^ K_0;
+// intersection of C_5k and the horizontal plane through P_5
+Q_c = Dual(C_5k . (P_5 ^ e1 ^ e2 ^ einf));
+// point P_c with an offset d4 from P_5
+P_c = ExtractFirstPoint(Q_c);
+// plane through joints 1, 2, 3 and 4
+PI_c = Dual(e0 ^ e3 ^ P_c ^ einf);
+
+
+// finding P_3 and P_4
+// plane parallel to PI_c that contains P_4 and P_5
+PI_c_parallel = PI_c + (P_5 . PI_c) * einf;
+PI_56_orthogonal = Dual(Dual(P_5 ^ P_e) ^ einf);
+
+s_e = createPoint(1, 2, 3);
+n_e = createPoint(-1, -1, -1);
+n_56 = Dual(s_e ^ n_e);
+PI_c_orthogonal = Dual(P_5 ^ n_56 ^ einf);
+L_45 = PI_c_parallel) ^ (PI_c_orthogonal);
+
+S_5 = SphereN3(P_5, d5);
+Q_4 = Dual(L_45 . S_5);
+P_4 = ExtractFirstPoint(Q_4);
+
+// point P3
+S_4 = SphereN3(P_4, d4);
+L_34 = Dual(P_5 ^ PI_c ^ einf);
+Q_3 = Dual(S_4 . L_34);
+P_3 = ExtractFirstPoint(Q_3);
+
+P_1 = createPoint(0, 0, d1 * e3);
+S_1 = SphereN3(P_1, a2);
+S_3 = SphereN3(P_3, a3);
+C_2 = S_1 ^ S_3;
+Q_2 = Dual(C_2 . PI_c);
+P_2 = ExtractFirstPoint(Q_2);
+
+?P_e;
