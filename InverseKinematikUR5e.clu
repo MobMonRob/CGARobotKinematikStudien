@@ -27,14 +27,29 @@ PI_c = Dual(e0 ^ e3 ^ P_c ^ einf);
 
 // finding P_3 and P_4
 // plane parallel to PI_c that contains P_4 and P_5
-PI_c_parallel = PI_c + (P_5 . PI_c) * einf;
-PI_56_orthogonal = Dual(Dual(P_5 ^ P_e) ^ einf);
+PI_c_parallel = PI_c + (P_5 . PI_c) * einf; // eq. 47
+PI_56_orthogonal = Dual(P_5 ^ P_e) ^ einf); // eq. 48 l.1
 
-s_e = createPoint(1, 2, 3);
-n_e = createPoint(-1, -1, -1);
-n_56 = Dual(s_e ^ n_e);
-PI_c_orthogonal = Dual(P_5 ^ n_56 ^ einf);
-L_45 = PI_c_parallel) ^ (PI_c_orthogonal);
+// vom clucalc script konvertieren
+// Gibts in gaalop eine Funktion zum Normalisieren eines Multivektors?
+// Wenn nicht, dann gibts verschiedene Wege das "von Hand zu machen":
+// Wenn der Multivektor durch ein inneres Produkt mit sich selbst multipliziert wird
+// dann ergibt sich ein skalar, dass der Länge des Vektors im Quadrat enspricht, davon
+// die wurzel ziehen und den usprünglichen Vektor durch dieses Skalar teile, oder ein
+// geometrisches Produkt mit 1/(diesem skalar)
+// falls nicht vorhanden eine eigene Funktion definieren
+// ok?
+
+n_56_orthogonal = -normalize(PI_56_othogonal . e0 . einf) // eq. 48, l. 2
+PI_c_orthogonal = P_5^n_56_orthogonal^einf
+L_45 = PI_c_parallel . PI_c_orthogonal
+
+// test
+//s_e = createPoint(1, 2, 3);
+//n_e = createPoint(-1, -1, -1);
+//n_56 = Dual(s_e ^ n_e);
+//PI_c_orthogonal = Dual(P_5 ^ n_56 ^ einf);
+//L_45 = PI_c_parallel ^ PI_c_orthogonal;
 
 S_5 = SphereN3(P_5, d5);
 Q_4 = Dual(L_45 . S_5);
