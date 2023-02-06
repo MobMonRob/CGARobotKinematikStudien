@@ -11,9 +11,9 @@ P_e = createPoint(0.42, 0.42, -0.40);
 P_5 = createPoint(0.36, 0.48, -0.34);
 
 // sphere around P_5
-S_c = Dual(SphereN3(P_5, d4));
+S_c = P_5 - (1/ 2 * d4 * d4 * einf);
 // sphere around the origin
-K_0 = Dual(SphereN3(e0, S_c . e0));
+K_0 = e0 + (S_c . e0) * einf;
 // intersection of S_c and K_0;
 C_5k = S_c ^ K_0;
 // intersection of C_5k and the horizontal plane through P_5
@@ -27,27 +27,31 @@ PI_c = Dual(e0 ^ e3 ^ P_c ^ einf);
 // finding P_3 and P_4
 // plane parallel to PI_c that contains P_4 and P_5
 PI_c_parallel = PI_c + (P_5 . PI_c) * einf; // eq. 47
-PI_56_orthogonal = Dual(P_5 ^ P_e) ^ einf); // eq. 48 l.1
+PI_56_orthogonal = Dual(Dual(P_5 ^ P_e) ^ einf); // eq. 48 l.1
 
-n_56_orthogonal = -((PI_56_othogonal . e0)  . einf) / abs((PI_56_orthogonal . e0) . einf); // eq. 48, l. 2
-PI_c_orthogonal = P_5^n_56_orthogonal^einf
-L_45 = PI_c_parallel . PI_c_orthogonal
+?n_56_orthogonal = -((Dual(PI_56_orthogonal) . e0)  . einf) / abs((Dual(PI_56_orthogonal) . e0) . einf); // eq. 48, l. 2
+PI_c_orthogonal = Dual(P_5 ^ n_56_orthogonal ^ einf);
+L_45 = PI_c_parallel ^ PI_c_orthogonal;
 
-S_5 = SphereN3(P_5, d5);
-Q_4 = Dual(L_45 . S_5);
+S_5 = P_5 - (1 / 2 * d5 * d5 * einf);
+Q_4 = Dual(L_45 . Dual(S_5));
 P_4 = ExtractFirstPoint(Q_4);
 
 // point P3
-S_4 = SphereN3(P_4, d4);
+S_4 = P_4 + (1 / 2 * d4 * d4 * einf);
 L_34 = Dual(P_5 ^ PI_c ^ einf);
-Q_3 = Dual(S_4 . L_34);
+Q_3 = Dual(Dual(S_4) . (L_34));
 P_3 = ExtractFirstPoint(Q_3);
 
-P_1 = createPoint(0, 0, d1 * e3);
-S_1 = SphereN3(P_1, a2);
-S_3 = SphereN3(P_3, a3);
+// finding P1 and P2
+P_1 = createPoint(0, 0, -d1);
+S_1 = P_1 - (1 / 2 * a2 * a2 * einf);
+S_3 = P_3 + (1 / 2 * a3 * a3 * einf);
 C_2 = S_1 ^ S_3;
-Q_2 = Dual(C_2 . PI_c);
+Q_2 = Dual(Dual(C_2) . PI_c);
 P_2 = ExtractFirstPoint(Q_2);
 
-?P_e;
+// finding the joint angles
+L_01 = Dual(e0 ^ e3 ^ einf);
+L_12 = Dual(P_1 ^ P_2 ^ einf);
+L_23 = Dual(P_2 ^ P_3 ^ einf);
