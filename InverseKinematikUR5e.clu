@@ -6,6 +6,8 @@ d4 = 0.1333;
 d5 = 0.0997;
 d6 = 0.0996;
 
+Pi = 3.14159265;
+
 // position of the end-effector and joint 5
 P_e = createPoint(0.42, 0.42, -0.40);
 P_5 = createPoint(0.36, 0.48, -0.34);
@@ -29,7 +31,7 @@ PI_c = Dual(e0 ^ -e3 ^ P_c ^ einf);
 PI_c_parallel = PI_c + (P_5 . PI_c) * einf; // eq. 47
 PI_56_orthogonal = Dual(Dual(P_5 ^ P_e) ^ einf); // eq. 48 l.1
 
-?n_56_orthogonal = -((Dual(PI_56_orthogonal) . e0)  . einf) / abs((Dual(PI_56_orthogonal) . e0) . einf); // eq. 48, l. 2
+n_56_orthogonal = -((Dual(PI_56_orthogonal) . e0)  . einf) / abs((Dual(PI_56_orthogonal) . e0) . einf); // eq. 48, l. 2
 PI_c_orthogonal = Dual(P_5 ^ n_56_orthogonal ^ einf);
 L_45 = PI_c_parallel ^ PI_c_orthogonal;
 
@@ -57,3 +59,33 @@ L_12 = Dual(P_1 ^ P_2 ^ einf);
 L_23 = Dual(P_2 ^ P_3 ^ einf);
 
 P_0 = createPoint(0,0,0);
+
+a_1 = e2;
+b_1 = -PI_c;
+N_1 = e1 ^ e2;
+?theta_1 = atan(((a_1 ^ b_1) / N_1) / (a_1 . b_1));
+
+a_2 = (L_01 . e0) . einf;
+b_2 = (L_12 . e0) . einf;
+N_2 = -(PI_c . e0) . einf);
+?theta_2 = atan((((a_2 ^ b_2) / N_2) - (Pi / 2)) / (a_2 . b_2));
+
+a_3 = (L_12 . e0) . einf;
+b_3 = (L_23 . e0) . einf;
+N_3 = -(PI_c . e0) . einf);
+?theta_3 = atan(((a_3 ^ b_3) / N_3) / (a_3 . b_3));
+	
+a_4 = (L_23 . e0) . einf;
+b_4 = (L_45 . e0) . einf;
+N_4 = -(PI_c . e0) . einf);
+?theta_4 = atan((((a_4^b_4) / N_4) - (Pi / 2)) / (a_4.b_4));
+	
+a_5 = P_c;
+b_5 = VecN3(1, 2, 3);
+N_5 = (-L_45 ^ e0) . einf;
+?theta_5 = atan(((a_5 ^ b_5) / N_5) / (a_5 . b_5));
+
+a_6 = (L_45 . o0) . einf;
+b_6 = VecN3(1, 2, 3);
+N_6 = VecN3(1, 2, 3);
+?theta_6 = atan(((a_6 ^ b_6) / N_6) / (a_6.b_6));
