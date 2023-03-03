@@ -1,7 +1,8 @@
 import math
 import numpy as np
+from csv import reader
 
-def angles(p_x, p_y, p_z):
+def inverse_kinematics_ur5e(p_x, p_y, p_z):
 	P_5 = np.zeros(32)
 	P_5[3] = p_z - 0.0996 # e3
 	P_5[4] = (p_x * p_x + p_y * p_y + (p_z - 0.0996) * (p_z - 0.0996)) / 2.0 # ep
@@ -246,4 +247,25 @@ def angles(p_x, p_y, p_z):
 	x6[7] = a_6[3] # e1 ^ e3
 	y6 = np.zeros(32)
 	y6[0] = (-L_45[7]) # 1.0
-	return x1, x2, x3, x4, x5, x6, y1, y2, y3, y4, y5, y6
+	return x1[0], x2[0], x3[0], x4[0], x5[0], x6[0], y1[0], y2[0], y3[0], y4[0], y5[0], y6[0]
+
+def calculate_angles(x, y):
+	theta1 = np.arctan2(x[0], y[0])
+	theta2 = np.arctan2(x[1], y[1])
+	theta3 = np.arctan2(x[2], y[2])
+	theta4 = np.arctan2(x[3], y[3])
+	theta5 = np.arctan2(x[4], y[4])
+	theta6 = np.arctan2(x[5], y[5])
+	return theta1, theta2, theta3, theta4, theta5, theta6
+
+with open('poses.csv', 'r') as read_obj:
+	
+	csv_reader = reader(read_obj)
+
+	for row in csv_reader:
+		x = np.zeros(6)
+		y = np.zeros(6)
+		x[0], x[1], x[2], x[3], x[4], x[5], y[0], y[1], y[2], y[3], y[4], y[5] = inverse_kinematics_ur5e(float(row[3]), float(row[4]), float(row[5]))
+
+		theta1, theta2, theta3, theta4, theta5, theta6 = calculate_angles(x, y)
+		print(theta1, theta2, theta3, theta4, theta5, theta6)
