@@ -256,6 +256,19 @@ def inverse_kinematics_ur5e(ae_1, ae_2, ae_3, p_x, p_y, p_z):
 	y6[0] = (-L_45[7]) # 1.0
 	return x1[0], x2[0], x3[0], x4[0], x5[0], x6[0], y1[0], y2[0], y3[0], y4[0], y5[0], y6[0]
 
+def calculate_endeffector_rotation_matrix(alpha, beta, gamma):
+	matrix = [
+		[math.cos(alpha) * math.cos(beta), math.cos(alpha) * math.sin(beta) * math.sin(gamma) - math.sin(alpha) * math.cos(gamma), math.cos(alpha) * math.sin(beta) * math.cos(gamma) + math.sin(alpha) * math.sin(gamma)],
+		[math.sin(alpha) * math.cos(beta), math.sin(alpha) * math.sin(beta) * math.sin(gamma) + math.cos(alpha) * math.cos(gamma), math.sin(alpha) * math.sin(beta) * math.cos(gamma) - math.cos(alpha) * math.sin(gamma)],
+		[-math.sin(beta), math.cos(beta) * math.sin(gamma), math.cos(beta) * math.cos(gamma)]
+	]
+
+	normal_vector = [matrix[0][0], matrix[1][0], matrix[2][0]]
+	slide_vector = [matrix[0][1], matrix[1][1], matrix[2][1]]
+	approach_vector = [matrix[0][2], matrix[1][2], matrix[2][2]]
+
+	return normal_vector, slide_vector, approach_vector
+
 def calculate_angles(x, y):
 	theta1 = np.arctan2(x[0], y[0])
 	theta2 = np.arctan2(x[1] - (np.pi / 2), y[1])
@@ -272,7 +285,10 @@ with open('poses.txt', 'r') as read_obj:
 	for row in csv_reader:
 		x = np.zeros(6)
 		y = np.zeros(6)
-		x[0], x[1], x[2], x[3], x[4], x[5], y[0], y[1], y[2], y[3], y[4], y[5] = inverse_kinematics_ur5e(0, 0, 1, float(row[3]), float(row[4]), float(row[5]))
+
+		normal_vector, slide_vector, approach_vector = calculate_endeffector_rotation_matrix(0,0,0)
+
+		x[0], x[1], x[2], x[3], x[4], x[5], y[0], y[1], y[2], y[3], y[4], y[5] = inverse_kinematics_ur5e(approach_vector[0], approach_vector[1], approach_vector[2], float(row[3]), float(row[4]), float(row[5]))
 
 		theta1, theta2, theta3, theta4, theta5, theta6 = calculate_angles(x, y)
 		print(theta1, theta2, theta3, theta4, theta5, theta6)
