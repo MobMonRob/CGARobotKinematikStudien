@@ -8,8 +8,8 @@ d6 = 0.0996;
 
 // position of the end-effector and joint 5
 //?P_e = (p_x * e1 + p_y * e2 + p_z * e3) + (1 / 2 * (p_x * p_x + p_y * p_y + p_z * p_z)) * einf + e0;
-?P_e = createPoint(p_x, p_y, -p_z);
-?P_5 = createPoint(p_x - d6 * ae_1, p_y - d6 * ae_2, -p_z - d6 * (-ae_3));
+?P_e = createPoint(p_x, p_y, p_z);
+?P_5 = createPoint(p_x - d6 * ae_1, p_y - d6 * ae_2, p_z - d6 * ae_3);
 
 // sphere around P_5
 ?S_c = P_5 - (1/ 2 * d4 * d4 * einf);
@@ -22,7 +22,7 @@ d6 = 0.0996;
 // point P_c with an offset d4 from P_5
 ?P_c = ExtractFirstPoint(Q_c);
 // plane through joints 1, 2, 3 and 4
-?PI_c = Dual(e0 ^ -e3 ^ P_c ^ einf);
+?PI_c = Dual(e0 ^ e3 ^ P_c ^ einf);
 
 
 // finding P_3 and P_4
@@ -41,7 +41,7 @@ d6 = 0.0996;
 // point P3
 ?S_4 = P_4 + (1 / 2 * d4 * d4 * einf);
 ?L_34 = Dual(P_4 ^ PI_c ^ einf);
-?Q_3 = Dual(Dual(S_4) . (L_34));
+?Q_3 = Dual(S_4 . Dual(L_34));
 ?P_3 = ExtractFirstPoint(Q_3);
 
 // finding P1 and P2
@@ -53,7 +53,7 @@ d6 = 0.0996;
 ?P_2 = ExtractFirstPoint(Q_2);
 
 // finding the joint angles
-?L_01 = Dual(e0 ^ -e3 ^ einf);
+?L_01 = Dual(e0 ^ e3 ^ einf);
 ?L_12 = Dual(P_1 ^ P_2 ^ einf);
 ?L_23 = Dual(P_2 ^ P_3 ^ einf);
 
@@ -91,6 +91,6 @@ d6 = 0.0996;
 
 ?a_6 = (Dual(L_45) . e0) . einf;
 ?b_6 = -(se_1 * e1 + se_2 * e2 + se_3 * e3);
-?N_6 = -(ae_1 * e1 + ae_2 * e2 + ae_3 * e3) * (-e3 ^ e2 ^ e1);
+?N_6 = -(ae_1 * e1 + ae_2 * e2 + ae_3 * e3) * (e3 ^ e2 ^ e1);
 ?x6 = (a_6 ^ b_6) / N_6;
 ?y6 = a_6 . b_6;
