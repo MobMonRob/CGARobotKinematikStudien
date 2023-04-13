@@ -36,13 +36,13 @@ d6 = 0.0996;
 
 ?S_5 = P_5 - (1 / 2 * d5 * d5 * einf);
 ?Q_4 = Dual(L_45 . Dual(S_5));
-?P_4 = ExtractFirstPoint(Q_4);
+?P_4 = ExtractSecondPoint(Q_4);
 
 // point P3
 ?S_4 = P_4 + (1 / 2 * d4 * d4 * einf);
 ?L_34 = Dual(P_4 ^ PI_c ^ einf);
 ?Q_3 = Dual(S_4 . Dual(L_34));
-?P_3 = ExtractFirstPoint(Q_3);
+?P_3 = ExtractSecondPoint(Q_3);
 
 // finding P1 and P2
 ?P_1 = createPoint(0, 0, d1);
@@ -50,7 +50,7 @@ d6 = 0.0996;
 ?S_3 = P_3 + (1 / 2 * a3 * a3 * einf);
 ?C_2 = S_1 ^ S_3;
 ?Q_2 = Dual(Dual(C_2) . PI_c);
-?P_2 = ExtractFirstPoint(Q_2);
+?P_2 = ExtractSecondPoint(Q_2);
 
 // finding the joint angles
 ?L_01 = Dual(e0 ^ e3 ^ einf);
