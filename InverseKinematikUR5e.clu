@@ -22,26 +22,27 @@ d6 = 0.0996;
 // point P_c with an offset d4 from P_5
 ?P_c = ExtractFirstPoint(Q_c);
 // plane through joints 1, 2, 3 and 4
-?PI_c = Dual(e0 ^ e3 ^ P_c ^ einf);
+?PI_c = e0 ^ e3 ^ P_c ^ einf;
 
 
 // finding P_3 and P_4
 // plane parallel to PI_c that contains P_4 and P_5
-?PI_c_parallel = PI_c + (P_5 . PI_c) * einf; // eq. 47
-?PI_56_orthogonal = Dual(Dual(P_5 ^ P_e) ^ einf); // eq. 48 l.1
+?PI_c_parallel = Dual(PI_c) + (P_5 . Dual(PI_c)) * einf; // eq. 47
+?PI_56_orthogonal = Dual(P_5 ^ P_e) ^ einf; // eq. 48 l.1
 
-?n_56_orthogonal = -((Dual(PI_56_orthogonal) . e0)  . einf) / abs((Dual(PI_56_orthogonal) . e0) . einf); // eq. 48, l. 2
-?PI_c_orthogonal = Dual(P_5 ^ n_56_orthogonal ^ einf);
-?L_45 = PI_c_parallel ^ PI_c_orthogonal;
+?n_56_orthogonal = -((PI_56_orthogonal . e0)  . einf) / abs((PI_56_orthogonal . e0) . einf); // eq. 48, l. 2
+?PI_c_orthogonal = P_5 ^ n_56_orthogonal ^ einf;
+?L_45 = PI_c_parallel ^ Dual(PI_c_orthogonal);
 
 ?S_5 = P_5 - (1 / 2 * d5 * d5 * einf);
 ?Q_4 = Dual(L_45 . Dual(S_5));
 ?P_4 = ExtractSecondPoint(Q_4);
+//?P_4 = (Q_4 + sqrt(Q_4 . Q_4)) / (-einf . Q_4);
 
 // point P3
 ?S_4 = P_4 + (1 / 2 * d4 * d4 * einf);
-?L_34 = Dual(P_4 ^ PI_c ^ einf);
-?Q_3 = Dual(S_4 . Dual(L_34));
+?L_34 = P_4 ^ Dual(PI_c) ^ einf;
+?Q_3 = Dual(Dual(S_4) . Dual(L_34));
 ?P_3 = ExtractSecondPoint(Q_3);
 
 // finding P1 and P2
@@ -49,13 +50,13 @@ d6 = 0.0996;
 ?S_1 = P_1 - (1 / 2 * a2 * a2 * einf);
 ?S_3 = P_3 + (1 / 2 * a3 * a3 * einf);
 ?C_2 = S_1 ^ S_3;
-?Q_2 = Dual(Dual(C_2) . PI_c);
+?Q_2 = Dual(Dual(C_2) . Dual(PI_c));
 ?P_2 = ExtractSecondPoint(Q_2);
 
 // finding the joint angles
-?L_01 = Dual(e0 ^ e3 ^ einf);
-?L_12 = Dual(P_1 ^ P_2 ^ einf);
-?L_23 = Dual(P_2 ^ P_3 ^ einf);
+?L_01 = e0 ^ e3 ^ einf;
+?L_12 = P_1 ^ P_2 ^ einf;
+?L_23 = P_2 ^ P_3 ^ einf;
 
 ?P_0 = createPoint(0,0,0);
 
