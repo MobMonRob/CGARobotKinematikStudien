@@ -2,6 +2,14 @@ import math
 import numpy as np
 from csv import reader
 
+def multivector_to_string(object, name, array):
+	string = object
+	string += "," + name
+	for x in array:
+		string += "," + str(x)
+	string += "\n"
+	return string
+
 def inverse_kinematics_ur5e(ae_1, ae_2, ae_3, se_1, se_2, se_3, p_x, p_y, p_z):
 	P_e = np.zeros(32)
 	P_e[1] = p_x # e1
@@ -261,6 +269,47 @@ def inverse_kinematics_ur5e(ae_1, ae_2, ae_3, se_1, se_2, se_3, p_x, p_y, p_z):
 	L_23[31] = (-(P_2[3] * P_3[18] + (-(P_2[5] * P_3[16])) + P_2[16] * P_3[5] + (-(P_2[18] * P_3[3])) + P_2[20] * P_3[2] + (-(P_2[23] * P_3[1])))) # e1 ^ (e2 ^ (e3 ^ (einf ^ e0)))
 	P_0 = np.zeros(32)
 	P_0[5] = 1.0 # e0
+	
+	multivectors = open("multivectors.csv", "w")
+
+	multivectors.write(multivector_to_string("point", "P_0", P_0))
+	multivectors.write(multivector_to_string("point", "P_1", P_1))
+	multivectors.write(multivector_to_string("point", "P_2", P_2))
+	multivectors.write(multivector_to_string("point", "P_3", P_3))
+	multivectors.write(multivector_to_string("point", "P_4", P_4))
+	multivectors.write(multivector_to_string("point", "P_5", P_5))
+	multivectors.write(multivector_to_string("point", "P_e", P_e))
+	multivectors.write(multivector_to_string("point", "P_c", P_c))
+
+	multivectors.write(multivector_to_string("sphereIPNS", "S_c", S_c))
+	multivectors.write(multivector_to_string("sphereIPNS", "K_0", K_0))
+	multivectors.write(multivector_to_string("circleIPNS", "C_5k", C_5k))
+	multivectors.write(multivector_to_string("ppIPNS", "Q_c", Q_c))
+
+	multivectors.write(multivector_to_string("planeOPNS", "PI_c", PI_c))
+	multivectors.write(multivector_to_string("planeIPNS", "PI_c_parallel", PI_c_parallel))
+	multivectors.write(multivector_to_string("planeOPNS", "PI_56_orthogonal", PI_56_orthogonal))
+	multivectors.write(multivector_to_string("planeOPNS", "PI_c_orthogonal", PI_c_orthogonal))
+
+	multivectors.write(multivector_to_string("lineIPNS", "L_45", L_45))
+
+	multivectors.write(multivector_to_string("sphereIPNS", "S_5", S_5))
+	multivectors.write(multivector_to_string("ppIPNS", "Q_4", Q_4))
+
+	multivectors.write(multivector_to_string("sphereIPNS", "S_4", S_4))
+	multivectors.write(multivector_to_string("lineOPNS", "L_34", L_34))
+	multivectors.write(multivector_to_string("ppIPNS", "Q_3", Q_3))
+
+	multivectors.write(multivector_to_string("sphereIPNS", "S_1", S_1))
+	multivectors.write(multivector_to_string("sphereIPNS", "S_3", S_3))
+	multivectors.write(multivector_to_string("circleIPNS", "C_2", C_2))
+	multivectors.write(multivector_to_string("ppIPNS", "Q_2", Q_2))
+
+	multivectors.write(multivector_to_string("lineOPNS", "L_01", L_01))
+	multivectors.write(multivector_to_string("lineOPNS", "L_12", L_12))
+	multivectors.write(multivector_to_string("lineOPNS", "L_23", L_23))
+
+	multivectors.write(multivector_to_string("normalvector", "n_c", n_c))
 
 def calculate_endeffector_rotation_matrix(alpha, beta, gamma):
 	matrix = [

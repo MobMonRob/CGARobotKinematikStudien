@@ -78,3 +78,39 @@ L_12_IPNS = Dual(L_12);
 L_23_IPNS = Dual(L_23);
 
 ?P_0 = createPoint(0,0,0);
+
+/*?a_1 = e2;
+?b_1 = -(PI_c);
+?N_1 = e1 ^ e2;
+?x1 = (a_1 ^ b_1) / N_1;
+?y1 = a_1 . b_1;
+
+?a_2 = (Dual(L_01) . e0) . einf;
+?b_2 = (Dual(L_12) . e0) . einf;
+?N_2 = -(Dual(PI_c) . e0) . einf;
+?x2 = (a_2 ^ b_2) / N_2;
+?y2 = a_2 . b_2;
+
+?a_3 = (Dual(L_12) . e0) . einf;
+?b_3 = (Dual(L_23) . e0) . einf;
+?N_3 = -(Dual(PI_c) . e0) . einf;
+?x3 = (a_3 ^ b_3) / N_3;
+?y3 = a_3 . b_3;
+	
+?a_4 = (Dual(L_23) . e0) . einf;
+?b_4 = (Dual(L_45) . e0) . einf;
+?N_4 = -(Dual(PI_c) . e0) . einf;
+?x4 = (a_4 ^ b_4) / N_4;
+?y4 = a_4 . b_4;
+	
+?a_5 = P_c;
+?b_5 = -(ae_1 * e1 + ae_2 * e2 + ae_3 * e3);
+?N_5 = (-L_45 ^ e0) . einf;
+?x5 = (a_5 ^ b_5) / N_5;
+?y5 = a_5 . b_5;
+
+?a_6 = (Dual(L_45) . e0) . einf;
+?b_6 = -(se_1 * e1 + se_2 * e2 + se_3 * e3);
+?N_6 = -(ae_1 * e1 + ae_2 * e2 + ae_3 * e3) * (e3 ^ e2 ^ e1);
+?x6 = (a_6 ^ b_6) / N_6;
+?y6 = a_6 . b_6;*/
